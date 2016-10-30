@@ -34,7 +34,7 @@ type TableTest struct {
 func (test TableTest) Spin(t *testing.T) string {
 	logger:= Logger{Title:strings.ToUpper(test.Name),Color:color.FgHiBlue}
 	logger.Print("Name: "+test.Name)
-	logger.Print(("Description: "+test.Description)
+	logger.Print("Description: "+test.Description)
 	url := TestServer.URL + test.Path
 	b, err := json.Marshal(test.Body)
 	assert.NoError(t, err)
