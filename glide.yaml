@@ -1,0 +1,10 @@
+package: bitbucket.org/cescoferraro/tools
+import:
+- package: github.com/spf13/cobra
+- package: github.com/spf13/viper
+- package: github.com/gorilla/mux
+  version: v1.1
+- package: github.com/braintree/manners
+  version: 0.4.0
+- package: github.com/gorilla/handlers
+  version: v1.1

@@ -1,2 +1,2 @@
 # tools
-Tools for easyier golang development
+Tools for easier golang development
