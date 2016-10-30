@@ -8,3 +8,5 @@ import:
   version: 0.4.0
 - package: github.com/gorilla/handlers
   version: v1.1
+- package: github.com/fatih/color
+  version: v1.1.0
