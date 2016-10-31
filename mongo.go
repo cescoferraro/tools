@@ -43,12 +43,13 @@ func Cloner() *MongoStore {
 //InitMongo set MongoDB connection
 func (store MongoStore) Init(done chan bool) {
 	mongoLogger.Print("Attempting to get MongoDB session")
-	err := store.connect()
+	var err error
+	store , err = store.connect()
 	for err != nil {
 		mongoLogger.Print(err.Error())
 		time.Sleep(2 * time.Second)
 		mongoLogger.Print("Reattempting to get MongoDB session")
-		err = store.connect()
+		store, err = store.connect()
 	}
 	store.Session.SetMode(mgo.Monotonic, true)
 	mongoLogger.Print("MongoDB session connected")
@@ -57,8 +58,7 @@ func (store MongoStore) Init(done chan bool) {
 }
 
 //Connect is a function that connects to MOngoDB
-func (store MongoStore) connect() (error) {
-
+func (store MongoStore) connect() (MongoStore, error) {
 	inf := &mgo.DialInfo{
 		Addrs:    []string{store.Host + ":" + strconv.Itoa(store.Port)},
 		Database: store.AuthDatabase,
@@ -66,13 +66,13 @@ func (store MongoStore) connect() (error) {
 		Password: store.Password,
 	}
 
-	var err error
-	store.Session, err = mgo.DialWithInfo(inf)
+	session, err := mgo.DialWithInfo(inf)
 	if err != nil {
-		return err
+		return store, err
 	}
-	if err = store.Session.Ping(); err != nil {
-		return err
+	if err = session.Ping(); err != nil {
+		return store,  err
 	}
-	return nil
+	store.Session = session
+	return store, nil
 }
