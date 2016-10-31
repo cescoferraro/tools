@@ -8,7 +8,7 @@ import (
 )
 
 
-var acceptableColors = []color.Attribute{color.FgBlue,color.FgWhite,color.FgGreen}
+var acceptableColors = []color.Attribute{color.FgBlue,color.FgWhite,color.FgGreen,color.FgRed,color.FgMagenta}
 
 
 type Logger struct {

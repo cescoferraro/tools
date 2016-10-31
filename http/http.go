@@ -1,4 +1,4 @@
-package tools
+package http
 
 import (
 	"net/http"
@@ -73,4 +73,21 @@ func WideOpenCORS() Adapter {
 			h.ServeHTTP(w, r)
 		})
 	}
+}
+
+
+type Module interface {
+	SetRoutes(*mux.Router) *mux.Router
+	Run()
+}
+
+type AllModules []Module
+
+func (modules AllModules) GetRouter() *mux.Router{
+	baseRouter := mux.NewRouter()
+	for _, a := range modules {
+		baseRouter = a.SetRoutes(baseRouter)
+		a.Run()
+	}
+	return baseRouter
 }
