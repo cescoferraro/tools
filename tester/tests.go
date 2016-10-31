@@ -1,4 +1,4 @@
-package tools
+package tester
 
 import (
 	"net/http/httptest"

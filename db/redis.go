@@ -1,10 +1,10 @@
-package tools
+package db
 
 import (
 	"github.com/spf13/viper"
-	"gopkg.in/redis.v5"
 	"log"
 	"time"
+	"gopkg.in/redis.v5"
 )
 
 //MONGO local MongoObject

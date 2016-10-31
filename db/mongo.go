@@ -1,10 +1,10 @@
-package tools
+package db
 
 import (
 	"time"
-	"gopkg.in/mgo.v2"
 	"strconv"
 	"github.com/cescoferraro/tools/logger"
+	"gopkg.in/mgo.v2"
 )
 
 
