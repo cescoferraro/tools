@@ -36,6 +36,8 @@ func (block Logger) Print(message string) {
 		colore := color.New(block.Color).SprintFunc()
 		msg := "[" + colore(block.Title) + "] " + message
 		empty := time.Time{}
+
+
 		if block.Time != empty {
 			msg = msg + " " + colore("+") + colore(time.Since(block.Time))
 		}
