@@ -1,4 +1,4 @@
-package: bitbucket.org/cescoferraro/tools
+package: github.com/cescoferraro/tools
 import:
 - package: github.com/spf13/cobra
 - package: github.com/spf13/viper
@@ -10,3 +10,4 @@ import:
   version: v1.1
 - package: github.com/fatih/color
   version: v1.1.0
+- package: gopkg.in/mgo.v2
