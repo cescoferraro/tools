@@ -25,7 +25,9 @@ func (block Logger) Now() Logger {
 func New(title string) Logger {
 	return Logger{Title:title,Color:getColor()}
 }
-
+func NewColor(title string, color color.Attribute) Logger {
+	return Logger{Title:title,Color:color}
+}
 
 func getColor() color.Attribute {
 	random := rand.Intn(len(acceptableColors))

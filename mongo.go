@@ -2,10 +2,9 @@ package tools
 
 import (
 	"time"
-
-	"github.com/fatih/color"
 	"gopkg.in/mgo.v2"
 	"strconv"
+	"github.com/cescoferraro/tools/logger"
 )
 
 
@@ -23,9 +22,7 @@ type MongoStore struct {
 	Port         int
 }
 
-var mongoLogger = Logger{Title:"MONGO", Color:color.FgGreen}
-
-
+var mongoLogger = logger.New("MONGO")
 
 //Cloner clones the local MONGO object
 func Cloner() *MongoStore {

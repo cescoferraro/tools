@@ -12,7 +12,11 @@ import (
 
 	"os"
 	"log"
+	"github.com/cescoferraro/tools/logger"
 )
+
+
+var toolsLogger = logger.New("TOOLS")
 
 type Adapter func(http.Handler) http.Handler
 
