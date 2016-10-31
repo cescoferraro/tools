@@ -30,6 +30,11 @@ var mongoLogger = Logger{Title:"MONGO", Color:color.FgGreen}
 //Cloner clones the local MONGO object
 func Cloner() *MongoStore {
 	return &MongoStore{
+		User:StoreObject.User,
+		Password:StoreObject.Password,
+		Host:StoreObject.Host,
+		Port:StoreObject.Port,
+		AuthDatabase: StoreObject.AuthDatabase,
 		Database: StoreObject.Database,
 		Session: StoreObject.Session.Copy(),
 	}
