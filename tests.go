@@ -4,8 +4,6 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/fatih/color"
-
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -13,6 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"strings"
 	"encoding/json"
+	"github.com/cescoferraro/tools/logger"
 )
 
 //Server is the global server var
@@ -32,7 +31,7 @@ type TableTest struct {
 
 
 func (test TableTest) Spin(t *testing.T) string {
-	logger:= Logger{Title:strings.ToUpper(test.Name),Color:color.FgHiBlue}
+	logger:= logger.New(strings.ToUpper(test.Name))
 	logger.Print("Name: "+test.Name)
 	logger.Print("Description: "+test.Description)
 	url := TestServer.URL + test.Path
