@@ -30,16 +30,15 @@ var mongoLogger = Logger{Title:"MONGO", Color:color.FgGreen}
 //Cloner clones the local MONGO object
 func Cloner() *MongoStore {
 	return &MongoStore{
-		StoreObject.Database,
-		StoreObject.Session.Copy(),
+		Database: StoreObject.Database,
+		Session: StoreObject.Session.Copy(),
 	}
 }
 
 //InitMongo set MongoDB connection
 func (store MongoStore) Init(done chan bool) {
-	StoreObject = store
 	mongoLogger.Print("Attempting to get MongoDB session")
-	 err := store.connect()
+	err := store.connect()
 	for err != nil {
 		mongoLogger.Print(err.Error())
 		time.Sleep(2 * time.Second)
@@ -48,6 +47,7 @@ func (store MongoStore) Init(done chan bool) {
 	}
 	store.Session.SetMode(mgo.Monotonic, true)
 	mongoLogger.Print("MongoDB session connected")
+	StoreObject = store
 	done <- true
 }
 
@@ -62,12 +62,12 @@ func (store MongoStore) connect() (error) {
 	}
 
 	var err error
-	store.Session , err = mgo.DialWithInfo(inf)
+	store.Session, err = mgo.DialWithInfo(inf)
 	if err != nil {
 		return err
 	}
 	if err = store.Session.Ping(); err != nil {
 		return err
 	}
-	return  nil
+	return nil
 }
