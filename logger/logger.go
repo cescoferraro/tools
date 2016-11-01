@@ -1,5 +1,6 @@
 package logger
 
+
 import (
 	"time"
 	"github.com/fatih/color"
@@ -7,9 +8,42 @@ import (
 	"math/rand"
 )
 
+var acceptableColors  []color.Attribute
 
-var acceptableColors = []color.Attribute{color.FgBlue,color.FgWhite,color.FgGreen,color.FgRed,color.FgMagenta}
 
+func init() {
+	renew()
+}
+
+func renew() {
+	acceptableColors = []color.
+	Attribute{
+		//color.FgBlack,
+		color.FgRed,
+		color.FgGreen,
+		color.FgYellow,
+		color.FgBlue,
+		color.FgMagenta,
+		color.FgCyan,
+		//color.FgWhite,
+		color.BgBlack,
+		color.BgRed,
+		color.BgGreen,
+		color.BgYellow,
+		color.BgBlue,
+		color.BgMagenta,
+		color.BgCyan,
+		color.BgWhite,
+		color.FgHiBlack,
+		color.FgHiRed,
+		color.FgHiGreen,
+		color.FgHiYellow,
+		color.FgHiBlue,
+		color.FgHiMagenta,
+		color.FgHiCyan,
+		color.FgHiWhite,
+	}
+}
 
 type Logger struct {
 	Title string
@@ -23,26 +57,40 @@ func (block Logger) Now() Logger {
 }
 
 func New(title string) Logger {
-	return Logger{Title:title,Color:getColor()}
+	return Logger{Title:title, Color:getColor()}
 }
+
 func NewColor(title string, color color.Attribute) Logger {
-	return Logger{Title:title,Color:color}
+	for u, cor := range acceptableColors {
+		if color == cor {
+			acceptableColors = append(acceptableColors[:u], acceptableColors[u + 1:]...)
+		}
+	}
+	return Logger{Title:title, Color:color}
 }
+
+
 
 func getColor() color.Attribute {
 	random := rand.Intn(len(acceptableColors))
+	removeColor := func(random int) {
+		acceptableColors = append(acceptableColors[:random], acceptableColors[random + 1:]...)
+		if len(acceptableColors) == 0 {
+			renew()
+		}
+	}
+	defer removeColor(random)
 	return acceptableColors[random]
 }
 
 func (block Logger) Print(message string) {
-		colore := color.New(block.Color).SprintFunc()
-		msg := "[" + colore(block.Title) + "] " + message
-		empty := time.Time{}
+	colore := color.New(block.Color).SprintFunc()
+	msg := "[" + colore(block.Title) + "] " + message
+	empty := time.Time{}
 
+	if block.Time != empty {
+		msg = msg + " " + colore("+") + colore(time.Since(block.Time))
+	}
 
-		if block.Time != empty {
-			msg = msg + " " + colore("+") + colore(time.Since(block.Time))
-		}
-
-		log.Println(msg)
+	log.Println(msg)
 }
