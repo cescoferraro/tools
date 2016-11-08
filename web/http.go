@@ -80,6 +80,7 @@ func WideOpenCORS() Adapter {
 type Module interface {
 	SetRoutes(*mux.Router) *mux.Router
 	Run()
+	Async()
 }
 
 type Modules []Module
@@ -89,6 +90,17 @@ func (modules Modules) Init() *mux.Router{
 	for _, a := range modules {
 		baseRouter = a.SetRoutes(baseRouter)
 		a.Run()
+		go a.Async()
+
+	}
+	return baseRouter
+}
+
+func (modules Modules) InitWithRouter(baseRouter *mux.Router) *mux.Router{
+	for _, a := range modules {
+		baseRouter = a.SetRoutes(baseRouter)
+		a.Run()
+		go a.Async()
 	}
 	return baseRouter
 }

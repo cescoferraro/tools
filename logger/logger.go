@@ -10,7 +10,7 @@ import (
 var Debug bool = true
 func init() {
 	jww.UseTempLogFile("api")
-	jww.SetStdoutThreshold(jww.LevelInfo)
+	jww.SetStdoutThreshold(jww.LevelTrace)
 }
 
 type Logger struct {
@@ -49,6 +49,7 @@ func removeColor(random int) {
 		renew()
 	}
 }
+
 func getColor() color.Attribute {
 	random := rand.Intn(len(acceptableColors))
 	defer removeColor(random)
@@ -59,7 +60,6 @@ func (block Logger) Print(message string) {
 	colore := color.New(block.Color).SprintFunc()
 	msg := "[" + colore(block.Title) + "] " + message
 	empty := time.Time{}
-
 	if block.Time != empty {
 		msg = msg + " " + colore("+") + colore(time.Since(block.Time))
 	}
