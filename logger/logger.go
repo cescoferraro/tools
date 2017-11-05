@@ -1,15 +1,16 @@
 package logger
 
 import (
-	"time"
-	"github.com/fatih/color"
 	"math/rand"
+	"time"
+
+	"github.com/fatih/color"
 	jww "github.com/spf13/jwalterweatherman"
 )
 
 var Debug bool = true
+
 func init() {
-	jww.UseTempLogFile("api")
 	jww.SetStdoutThreshold(jww.LevelTrace)
 }
 
@@ -17,7 +18,6 @@ type Logger struct {
 	Title string
 	Color color.Attribute
 	Time  time.Time
-
 }
 
 func (block Logger) Now() Logger {
@@ -25,13 +25,13 @@ func (block Logger) Now() Logger {
 	return block
 }
 
-func ShowLocation()  {
+func ShowLocation() {
 	Debug = true
 	return
 }
 
 func New(title string) Logger {
-	return Logger{Title:title, Color:getColor()}
+	return Logger{Title: title, Color: getColor()}
 }
 
 func NewColor(title string, color color.Attribute) Logger {
@@ -40,11 +40,11 @@ func NewColor(title string, color color.Attribute) Logger {
 			removeColor(u)
 		}
 	}
-	return Logger{Title:title, Color:color}
+	return Logger{Title: title, Color: color}
 }
 
 func removeColor(random int) {
-	acceptableColors = append(acceptableColors[:random], acceptableColors[random + 1:]...)
+	acceptableColors = append(acceptableColors[:random], acceptableColors[random+1:]...)
 	if len(acceptableColors) == 0 {
 		renew()
 	}
