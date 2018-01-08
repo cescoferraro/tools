@@ -1,9 +1,10 @@
 package logger
 
 import (
-	"time"
-	"github.com/fatih/color"
 	"math/rand"
+	"time"
+
+	"github.com/fatih/color"
 	jww "github.com/spf13/jwalterweatherman"
 )
 
@@ -11,7 +12,6 @@ import (
 var Debug bool = true
 
 func init() {
-	jww.UseTempLogFile("api")
 	jww.SetStdoutThreshold(jww.LevelTrace)
 }
 
@@ -28,7 +28,10 @@ func (block Logger) Now() Logger {
 	return block
 }
 
+<<<<<<< HEAD
 // ShowLocation TODO: NEEDS COMMENT INFO
+=======
+>>>>>>> 75b7584b484022a9aabb18fe754d142e3e73e48f
 func ShowLocation() {
 	Debug = true
 	return
