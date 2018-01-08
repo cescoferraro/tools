@@ -1,17 +1,18 @@
 package venom
 
 import (
+	"sort"
+	"strings"
+
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"strings"
-	"github.com/cescoferraro/tools/logger"
-	"github.com/fatih/color"
-	"sort"
 )
 
 type Flag struct {
 	Name        string
 	Short       string
+	Safe        bool
 	Description string
 	Value       interface{}
 }
@@ -30,21 +31,30 @@ func (flags CommandFlag) Register(command *cobra.Command) *cobra.Command {
 			command.Flags().StringP(i.Name, i.Short, i.Value.(string), i.Description)
 		}
 		viper.BindPFlag(i.Name, command.Flags().Lookup(i.Name))
-		viper.BindEnv( i.Name)
+		viper.BindEnv(i.Name)
 	}
 	return command
 }
 
-
-var VIPERLOGGER = logger.New("VIPER")
-func PrintViperConfig() {
+// PrintViperConfig TODO: NEEDS COMMENT INFO
+func PrintViperConfig(flags CommandFlag) {
 	// TODO: HANDLE NESTED YAMLS BETTER
 	keys := viper.AllKeys()
 	yellow := color.New(color.FgYellow).SprintFunc()
 	red := color.New(color.FgRed).SprintFunc()
 	sort.Strings(keys)
 	for _, key := range keys {
-		VIPERLOGGER.Print(" "+ red(strings.ToUpper(key)) + " " + yellow(key) + ": " + viper.GetString(key))
+		if flagByName(flags, key).Safe {
+			VIPERLOGGER.Print(
+				" " + red(strings.ToUpper(key)) +
+					" " + yellow(key) +
+					": " + viper.GetString(key)[0:len(viper.GetString(key))*4/10] + "...")
+		} else {
+			VIPERLOGGER.Print(
+				" " + red(strings.ToUpper(key)) +
+					" " + yellow(key) +
+					": " + viper.GetString(key))
+		}
 	}
 	return
 }
