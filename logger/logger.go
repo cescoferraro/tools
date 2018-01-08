@@ -28,10 +28,7 @@ func (block Logger) Now() Logger {
 	return block
 }
 
-<<<<<<< HEAD
 // ShowLocation TODO: NEEDS COMMENT INFO
-=======
->>>>>>> 75b7584b484022a9aabb18fe754d142e3e73e48f
 func ShowLocation() {
 	Debug = true
 	return
