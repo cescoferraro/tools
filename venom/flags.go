@@ -4,6 +4,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/cescoferraro/tools/logger"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -34,6 +35,18 @@ func (flags CommandFlag) Register(command *cobra.Command) *cobra.Command {
 		viper.BindEnv(i.Name)
 	}
 	return command
+}
+
+// VIPERLOGGER TODO: NEEDS COMMENT INFO
+var VIPERLOGGER = logger.New("VIPER")
+
+func flagByName(RunServerFlags CommandFlag, name string) Flag {
+	for _, flag := range RunServerFlags {
+		if flag.Name == name {
+			return flag
+		}
+	}
+	return Flag{}
 }
 
 // PrintViperConfig TODO: NEEDS COMMENT INFO
