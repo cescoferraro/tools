@@ -1,14 +1,16 @@
 package venom
 
 import (
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
+	"sort"
 	"strings"
+
 	"github.com/cescoferraro/tools/logger"
 	"github.com/fatih/color"
-	"sort"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
+// Flag TODO: NEEDS COMMENT INFO
 type Flag struct {
 	Name        string
 	Short       string
@@ -16,27 +18,31 @@ type Flag struct {
 	Value       interface{}
 }
 
+// CommandFlag TODO: NEEDS COMMENT INFO
 type CommandFlag []Flag
 
+// Register TODO: NEEDS COMMENT INFO
 func (flags CommandFlag) Register(command *cobra.Command) *cobra.Command {
 	for _, i := range flags {
 
 		switch i.Value.(type) {
 		case int:
-			command.Flags().IntP(i.Name, i.Short, i.Value.(int), i.Description)
+			command.PersistentFlags().IntP(i.Name, i.Short, i.Value.(int), i.Description)
 		case bool:
-			command.Flags().BoolP(i.Name, i.Short, i.Value.(bool), i.Description)
+			command.PersistentFlags().BoolP(i.Name, i.Short, i.Value.(bool), i.Description)
 		case string:
-			command.Flags().StringP(i.Name, i.Short, i.Value.(string), i.Description)
+			command.PersistentFlags().StringP(i.Name, i.Short, i.Value.(string), i.Description)
 		}
-		viper.BindPFlag(i.Name, command.Flags().Lookup(i.Name))
-		viper.BindEnv( i.Name)
+		viper.BindPFlag(i.Name, command.PersistentFlags().Lookup(i.Name))
+		viper.BindEnv(i.Name)
 	}
 	return command
 }
 
-
+// VIPERLOGGER TODO: NEEDS COMMENT INFO
 var VIPERLOGGER = logger.New("VIPER")
+
+// PrintViperConfig TODO: NEEDS COMMENT INFO
 func PrintViperConfig() {
 	// TODO: HANDLE NESTED YAMLS BETTER
 	keys := viper.AllKeys()
@@ -44,7 +50,7 @@ func PrintViperConfig() {
 	red := color.New(color.FgRed).SprintFunc()
 	sort.Strings(keys)
 	for _, key := range keys {
-		VIPERLOGGER.Print(" "+ red(strings.ToUpper(key)) + " " + yellow(key) + ": " + viper.GetString(key))
+		VIPERLOGGER.Print(" " + red(strings.ToUpper(key)) + " " + yellow(key) + ": " + viper.GetString(key))
 	}
 	return
 }
