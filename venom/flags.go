@@ -14,6 +14,7 @@ import (
 type Flag struct {
 	Name        string
 	Short       string
+	Safe        bool
 	Description string
 	Value       interface{}
 }
