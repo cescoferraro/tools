@@ -43,15 +43,34 @@ func (flags CommandFlag) Register(command *cobra.Command) *cobra.Command {
 // VIPERLOGGER TODO: NEEDS COMMENT INFO
 var VIPERLOGGER = logger.New("VIPER")
 
+func flagByName(RunServerFlags CommandFlag, name string) Flag {
+	for _, flag := range RunServerFlags {
+		if flag.Name == name {
+			return flag
+		}
+	}
+	return Flag{}
+}
+
 // PrintViperConfig TODO: NEEDS COMMENT INFO
-func PrintViperConfig() {
+func PrintViperConfig(flags CommandFlag) {
 	// TODO: HANDLE NESTED YAMLS BETTER
 	keys := viper.AllKeys()
 	yellow := color.New(color.FgYellow).SprintFunc()
 	red := color.New(color.FgRed).SprintFunc()
 	sort.Strings(keys)
 	for _, key := range keys {
-		VIPERLOGGER.Print(" " + red(strings.ToUpper(key)) + " " + yellow(key) + ": " + viper.GetString(key))
+		if flagByName(flags, key).Safe {
+			VIPERLOGGER.Print(
+				" " + red(strings.ToUpper(key)) +
+					" " + yellow(key) +
+					": " + viper.GetString(key)[0:len(viper.GetString(key))*4/10] + "...")
+		} else {
+			VIPERLOGGER.Print(
+				" " + red(strings.ToUpper(key)) +
+					" " + yellow(key) +
+					": " + viper.GetString(key))
+		}
 	}
 	return
 }
